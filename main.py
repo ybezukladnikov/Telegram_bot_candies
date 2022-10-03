@@ -15,11 +15,10 @@ def cancel(update, _):
     # # Пишем в журнал о том, что пользователь не разговорчивый
     # logger.info("Пользователь %s отменил разговор.", user.first_name)
     # # Отвечаем на отказ поговорить
-    # update.message.reply_text(
-    #     'Мое дело предложить - Ваше отказаться'
-    #     ' Будет скучно - пиши.',
-    #     reply_markup=ReplyKeyboardRemove()
-    # )
+    update.message.reply_text(
+        'Как будет грустно, пиши',
+        reply_markup=ReplyKeyboardRemove()
+    )
     # Заканчиваем разговор.
     return ConversationHandler.END
 
@@ -28,7 +27,7 @@ bot = Bot(token=TOKEN)
 updater = Updater(token=TOKEN)
 dispatcher = updater.dispatcher
 
-first_question = range(1)
+
 conv_handler = ConversationHandler( # здесь строится логика разговора
         # точка входа в разговор
         entry_points=[MessageHandler(Filters.text, bt.start)],
@@ -39,7 +38,10 @@ conv_handler = ConversationHandler( # здесь строится логика �
             bt.choose_num_can:[MessageHandler(Filters.text, bt.check_num_can)],
             bt.choose_max_num:[MessageHandler(Filters.text, bt.check_max_can)],
             bt.start_play:[MessageHandler(Filters.text, bt.main_func)],
-            # bt.happy_end:
+            bt.create_name:[MessageHandler(Filters.text, bt.check_name)],
+            bt.step_first_pl:[MessageHandler(Filters.text, bt.main_step_first)],
+            bt.step_second_pl:[MessageHandler(Filters.text, bt.main_step_second)],
+
             # PHOTO: [MessageHandler(Filters.photo, photo), CommandHandler('skip', skip_photo)],
             # LOCATION: [
             #     MessageHandler(Filters.location, location),
